@@ -19,13 +19,38 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        showMainMenu()
+    }
+
+    override var shouldAutorotate: Bool {
+        return true
+    }
+    
+    // TODO: Play some music and add some bouncing/floating blocks in the main menu
+    func showMainMenu(){
+
+        let startBtn = MainMenuButton(frame: CGRect(x:(UIScreen.main.bounds.size.width  - 240) / 2,
+                                              y:(UIScreen.main.bounds.size.height - 40) / 2, width:240, height:40))
+        startBtn.whenButtonIsClicked { [unowned self] in
+            self.startGame()
+            startBtn.isHidden = true
+        }
+        startBtn.layer.borderColor = UIColor.black.cgColor
+        startBtn.layer.borderWidth = 2
+        startBtn.titleLabel!.font = UIFont.systemFont(ofSize: 24)
+        startBtn.tintColor = UIColor.black
+        startBtn.setTitle("Start", for: UIControl.State.normal)
+
+        self.view.addSubview(startBtn)
+    }
+    
+    func startGame(){
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
             if let scene = SKScene(fileNamed: "GameScene") {
                 // Set the scale mode to scale to fit the window
                 //scene.scaleMode = .aspectFill
                 scene.scaleMode = SKSceneScaleMode.fill
-                // Present the scene
                 view.presentScene(scene)
             }
             
@@ -34,10 +59,6 @@ class GameViewController: UIViewController {
             view.showsFPS = true
             view.showsNodeCount = true
         }
-    }
-
-    override var shouldAutorotate: Bool {
-        return true
     }
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
