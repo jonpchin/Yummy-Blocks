@@ -11,3 +11,6 @@ TODO:
 5. Figure a way to monetize game, show ads when player is waiting for game in online mode?  
 6. In game purchases: grant new ability for dual block types (blocks that have two colors) at the start of every level for 10 seconds. The dual block can be affected by two block types instead of one block type. There are four dual block types so their can be up to four purchases. There is also an optional purchase to remove ads when waiting in the lobby or for a game.  
 7. Rename block_drop to something cooler like Colliding Cubes?  
+
+
+Poupi Great Adventures : The Arcade Game by Komiku is licensed under a CC0 1.0 Universal License. renamed to arcade_game.png to make the file  name shorter.

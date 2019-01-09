@@ -9,8 +9,11 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+import AVFoundation
 
 class GameViewController: UIViewController {
+    
+    var player: AVAudioPlayer?
     
     override func loadView() {
         self.view = SKView()
@@ -18,7 +21,7 @@ class GameViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        playSound(soundFile: "arcade_game")
         showMainMenu()
     }
 
@@ -28,10 +31,13 @@ class GameViewController: UIViewController {
     
     // TODO: Play some music and add some bouncing/floating blocks in the main menu
     func showMainMenu(){
-
-        let startBtn = MainMenuButton(frame: CGRect(x:(UIScreen.main.bounds.size.width  - 240) / 2,
-                                              y:(UIScreen.main.bounds.size.height - 40) / 2, width:240, height:40))
+        
+        let buttonWidth:CGFloat = 240
+        let buttonHeight:CGFloat = 40
+        let startBtn = MainMenuButton(frame: CGRect(x:(UIScreen.main.bounds.size.width  - buttonWidth) / 2,
+                                              y:(UIScreen.main.bounds.size.height - buttonHeight) / 2, width:buttonWidth, height:buttonHeight))
         startBtn.whenButtonIsClicked { [unowned self] in
+            self.playSound(soundFile: "zapTwoTone2")
             self.startGame()
             startBtn.isHidden = true
         }
@@ -42,6 +48,36 @@ class GameViewController: UIViewController {
         startBtn.setTitle("Start", for: UIControl.State.normal)
 
         self.view.addSubview(startBtn)
+        
+        var floatingBlock : UIImageView
+        floatingBlock  = UIImageView(frame:CGRect(x:UIScreen.main.bounds.size.width/2,
+                                                  y: UIScreen.main.bounds.size.height/4, width:64, height:64))
+        floatingBlock.image = UIImage(named: "pineapple")
+       
+        let oldCenter = floatingBlock.center
+        let newCenter = CGPoint(x: UIScreen.main.bounds.size.width/2 - 100, y: oldCenter.y)
+        
+        UIView.animate(withDuration: 3, delay: 0, options: .curveLinear, animations: {
+            floatingBlock.center = newCenter
+        }) { (success: Bool) in
+            print("Done moving image")
+        }
+        
+        self.view.addSubview(floatingBlock)
+    }
+
+
+    func playSound(soundFile : String) {
+        let path = Bundle.main.path(forResource: soundFile, ofType:"mp3")!
+        let url = URL(fileURLWithPath: path)
+        
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player?.play()
+        } catch {
+            // couldn't load file :(
+            print("couldn't load mp3 file")
+        }
     }
     
     func startGame(){

@@ -206,6 +206,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    // Called once when game is initialized
     override func didMove(to view: SKView) {
         
         physicsWorld.contactDelegate = self
