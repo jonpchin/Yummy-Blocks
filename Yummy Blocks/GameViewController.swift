@@ -32,14 +32,23 @@ class GameViewController: UIViewController {
     // TODO: Play some music and add some bouncing/floating blocks in the main menu
     func showMainMenu(){
         
+        let diff:CGFloat = 30.0
+        var floatingPineapple : UIImageView
+        floatingPineapple  = UIImageView(frame:CGRect(x:UIScreen.main.bounds.size.width/2,
+                                                  y: UIScreen.main.bounds.size.height/4, width:64, height:64))
+        var floatingIcecream : UIImageView
+        floatingIcecream  = UIImageView(frame:CGRect(x:UIScreen.main.bounds.size.width/2-(diff*3),
+                                                      y: UIScreen.main.bounds.size.height/4-diff, width:64, height:64))
         let buttonWidth:CGFloat = 240
         let buttonHeight:CGFloat = 40
         let startBtn = MainMenuButton(frame: CGRect(x:(UIScreen.main.bounds.size.width  - buttonWidth) / 2,
                                               y:(UIScreen.main.bounds.size.height - buttonHeight) / 2, width:buttonWidth, height:buttonHeight))
-        startBtn.whenButtonIsClicked { [unowned self] in
+        startBtn.whenButtonIsClicked { [unowned self, floatingPineapple, floatingIcecream] in
             self.playSound(soundFile: "zapTwoTone2")
             self.startGame()
             startBtn.isHidden = true
+            floatingPineapple.isHidden = true
+            floatingIcecream.isHidden = true
         }
         startBtn.layer.borderColor = UIColor.black.cgColor
         startBtn.layer.borderWidth = 2
@@ -49,23 +58,24 @@ class GameViewController: UIViewController {
 
         self.view.addSubview(startBtn)
         
-        var floatingBlock : UIImageView
-        floatingBlock  = UIImageView(frame:CGRect(x:UIScreen.main.bounds.size.width/2,
-                                                  y: UIScreen.main.bounds.size.height/4, width:64, height:64))
-        floatingBlock.image = UIImage(named: "pineapple")
+        floatingPineapple.image = UIImage(named: "pineapple")
+        floatingIcecream.image = UIImage(named: "icecream")
        
-        let oldCenter = floatingBlock.center
-        let newCenter = CGPoint(x: UIScreen.main.bounds.size.width/2 - 100, y: oldCenter.y)
+        let oldCenterPineapple = floatingPineapple.center
+        let newCenterPineapple = CGPoint(x: oldCenterPineapple.x, y: oldCenterPineapple.y-diff)
+        let oldCenterIcecream = floatingIcecream.center
+        let newCenterIcecream = CGPoint(x: oldCenterIcecream.x, y: oldCenterIcecream.y+diff)
         
-        UIView.animate(withDuration: 3, delay: 0, options: .curveLinear, animations: {
-            floatingBlock.center = newCenter
+        UIView.animate(withDuration: 1, delay: 0, options: [.repeat, .autoreverse], animations: {
+            floatingPineapple.center = newCenterPineapple
+            floatingIcecream.center = newCenterIcecream
         }) { (success: Bool) in
             print("Done moving image")
         }
         
-        self.view.addSubview(floatingBlock)
+        self.view.addSubview(floatingPineapple)
+        self.view.addSubview(floatingIcecream)
     }
-
 
     func playSound(soundFile : String) {
         let path = Bundle.main.path(forResource: soundFile, ofType:"mp3")!
@@ -106,7 +116,6 @@ class GameViewController: UIViewController {
         return .portrait
     }
     
-   
     override var prefersStatusBarHidden: Bool {
         return true
     }
