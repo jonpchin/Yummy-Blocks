@@ -16,6 +16,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private var blockNode : SKSpriteNode?
     // The next block to fall
     private var nextBlock : SKSpriteNode?
+    var viewController: UIViewController?
 
     // The image file of the next block to fall
     var imageName:String = ""
@@ -202,7 +203,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if self.children.count > 70 {
             let tempLevel = level.text!.components(separatedBy: " ")
             let tempPoints = points.text!.components(separatedBy: " ")
-            print("Game Over! Your score is " + String((20 * Int(tempLevel[1])!) + Int(tempPoints[1])!))
+            playSound(soundFile: "game_over")
+            let gameViewController = GameViewController()
+            let tempScore = String((20 * Int(tempLevel[1])!) + Int(tempPoints[1])!)
+        
+            gameViewController.recentScore = tempScore
+            
+            let highestScore = UserDefaults.standard.string(forKey: "Score")
+            
+            if let tempScoreInt = Int(tempScore) {
+                if let highestScoreInt = Int(highestScore!) {
+                    if tempScoreInt > highestScoreInt || highestScore == nil {
+                        UserDefaults.standard.set(tempScore, forKey: "Score")
+                    }
+                }
+            }
+            
+            self.view?.window?.rootViewController = gameViewController
         }
     }
     
