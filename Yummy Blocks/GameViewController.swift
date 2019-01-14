@@ -50,7 +50,7 @@ class GameViewController: UIViewController {
         let buttonHeight:CGFloat = 40
         let playBtn = MainMenuButton(frame: CGRect(x:(UIScreen.main.bounds.size.width  - buttonWidth) / 2,
                                               y:(UIScreen.main.bounds.size.height - buttonHeight) / 2, width:buttonWidth, height:buttonHeight))
-        playBtn.whenButtonIsClicked { [unowned self, floatingPineapple, floatingIcecream, highestScoreBoard] in
+        playBtn.whenButtonIsClicked { [unowned self] in
             self.playSound(soundFile: "zapTwoTone2")
             self.startGame()
             playBtn.isHidden = true
