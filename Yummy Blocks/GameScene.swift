@@ -205,7 +205,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
             gameViewController.recentScore = tempScore
             
-            let highestScore = UserDefaults.standard.string(forKey: "Score")
+            var highestScore = UserDefaults.standard.string(forKey: "Score")
+            if highestScore == nil {
+                highestScore = "0"
+            }
             
             if let tempScoreInt = Int(tempScore) {
                 if let highestScoreInt = Int(highestScore!) {
