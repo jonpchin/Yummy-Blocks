@@ -93,7 +93,7 @@ class GameViewController: UIViewController {
         if recentScore != nil{
             recentScoreBoard.text = "Recent Score: " + recentScore!
         }
-        
+
         self.view.addSubview(floatingPineapple)
         self.view.addSubview(floatingIcecream)
         self.view.addSubview(highestScoreBoard)

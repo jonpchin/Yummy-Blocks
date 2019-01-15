@@ -172,10 +172,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createNewBlock(atPoint pos : CGPoint){
-        
-        //let randomXFloat = CGFloat(arc4random_uniform(640)) - 320
-        //let randomPoint = CGPoint(x: randomXFloat, y: 640.0)
-        
+  
         blockNode = SKSpriteNode(imageNamed: imageName)
         blockNode!.position = CGPoint(x: pos.x, y: 640)
         
@@ -189,7 +186,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ColliderType.Liquorice.rawValue | ColliderType.Lychee.rawValue | ColliderType.Mango.rawValue | ColliderType.Oyster.rawValue |
             ColliderType.Passionfruit.rawValue | ColliderType.Pineapple.rawValue | ColliderType.Salt.rawValue | ColliderType.Strawberry.rawValue |
             ColliderType.Sugar.rawValue  | ColliderType.Water.rawValue  | ColliderType.Floor.rawValue
-        
         
         blockNode!.physicsBody?.contactTestBitMask = getCollidableBlockTypes(blockType: imageName)
         
@@ -227,10 +223,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func didMove(to view: SKView) {
         
         physicsWorld.contactDelegate = self
-        
         self.backgroundColor = .white
-        timer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(timerAction), userInfo: nil, repeats: true)
-        
+
         points = self.childNode(withName: "Points") as? SKLabelNode
         points.text = "Points 0"
  
@@ -259,11 +253,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         
         blockNode!.removeAllActions()
-        
         let nodeAName = contact.bodyA.node!.name!
-        //print("The \(nodeAName) entered in contact with the \(contact.bodyB.node!.name!)")
-        
-        // TODO: Add animation for each block, Ex: for water block make water explosion animation
+
         let object2 = contact.bodyA.node as! SKSpriteNode
         let object1 = contact.bodyB.node as! SKSpriteNode
         
@@ -278,8 +269,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         let waitAction: SKAction = SKAction.wait(forDuration: 0.2)
-
-        
+   
         let combined: SKAction = SKAction.sequence(
             [   changeColorAction,
                 waitAction,
@@ -347,15 +337,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         return backgroundTileDefinition
     }
     
-    @objc func timerAction() {
-        
-        counter -= 1
-        //print(counter)
-        if counter == 299 {
-            //moveBlockNodeDown(xCoord: blockNode!.position.x, yCoord: -640)
-        }
-    }
-    
     func moveBlockNodeDown(touchedLocation: CGPoint, yCoord: CGFloat)
     {
         blockNode?.removeFromParent()
@@ -365,7 +346,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(blockNode!)
     }
     func touchDown(atPoint pos : CGPoint) {
-        createNewBlock(atPoint: pos)
+        
+        var tempPos:CGPoint = CGPoint(x: pos.x, y: pos.y)
+        
+        if pos.x > 360 {
+            tempPos.x = 360
+        }
+        
+        if pos.x < -360 {
+            tempPos.x = -360
+        }
+        
+        createNewBlock(atPoint: tempPos)
     }
     
     func touchMoved(toPoint pos : CGPoint) {
